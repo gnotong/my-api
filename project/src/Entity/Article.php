@@ -22,6 +22,11 @@ class Article
     private ?int $id = null;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private ?string $name = null;
+
+    /**
      * @ORM\Column(type="text")
      */
     private ?string $content = null;
@@ -63,6 +68,17 @@ class Article
     {
         $this->author = $author;
 
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
         return $this;
     }
 }
