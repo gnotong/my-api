@@ -27,7 +27,9 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= 10; $i++) {
             $user = new User();
             $user->setEmail($faker->email)
-                ->setPassword($this->encoder->encodePassword($user, 'password'));
+                ->setPassword($this->encoder->encodePassword($user, 'password'))
+                ->setAge($faker->numberBetween(18, 75))
+                ->setStatus($faker->randomElement([true, false]));
 
             $manager->persist($user);
 

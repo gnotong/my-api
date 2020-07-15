@@ -11,6 +11,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -30,6 +35,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "delete"
  *     }
  * )
+ * @ApiFilter(SearchFilter::class, properties={"email": "partial"})
+ * @ApiFilter(NumericFilter::class, properties={"age"})
+ * @ApiFilter(RangeFilter::class, properties={"age"})
+ * @ApiFilter(BooleanFilter::class, properties={"status"})
  */
 class User implements UserInterface
 {
@@ -65,6 +74,18 @@ class User implements UserInterface
      * @Groups({"user:details"})
      */
     private Collection $articles;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"user:read", "user:details"})
+     */
+    private ?bool $status = null;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"user:read", "user:details"})
+     */
+    private ?int $age = null;
 
     public function __construct()
     {
@@ -169,6 +190,30 @@ class User implements UserInterface
                 $article->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(?int $age): self
+    {
+        $this->age = $age;
 
         return $this;
     }
