@@ -37,5 +37,7 @@ class ArticleSubscriber implements EventSubscriberInterface
         }
 
         $this->authorizationChecker->check($entity, $method);
+
+        $entity->setUpdatedAt(new \DateTimeImmutable('now'));
     }
 }

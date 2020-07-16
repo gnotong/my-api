@@ -12,7 +12,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ArticleAuthorizationChecker
 {
-    const AUTHORIZED_METHODS = [Request::METHOD_PATCH, Request::METHOD_PUT, Request::METHOD_DELETE, Request::METHOD_POST];
+    const AUTHORIZED_METHODS = [
+        Request::METHOD_POST,
+        Request::METHOD_PUT,
+        Request::METHOD_PATCH,
+        Request::METHOD_DELETE
+    ];
 
     private ?UserInterface $user;
     private AuthenticationChecker $authenticationChecker;
