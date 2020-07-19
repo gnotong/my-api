@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -16,6 +17,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -39,6 +41,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * @ApiFilter(NumericFilter::class, properties={"age"})
  * @ApiFilter(RangeFilter::class, properties={"age"})
  * @ApiFilter(BooleanFilter::class, properties={"status"})
+ * @UniqueEntity(fields={"email"}, message="This email is already in use.")
  */
 class User implements UserInterface
 {
@@ -55,6 +58,8 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"user:read", "user:details", "article:details"})
+     * @Assert\NotBlank(message="this value must not be null")
+     * @Assert\Email(message="this value is not valid")
      */
     private ?string $email = null;
 
@@ -66,6 +71,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="this value must not be null")
      */
     private ?string $password = null;
 

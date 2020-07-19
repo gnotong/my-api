@@ -25,7 +25,6 @@ RUN docker-php-ext-configure intl && \
     && pecl install amqp \
     && docker-php-ext-enable amqp
 
-
 COPY ./project /app/my-api
 
 WORKDIR /app/my-api

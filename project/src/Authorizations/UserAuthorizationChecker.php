@@ -29,6 +29,10 @@ class UserAuthorizationChecker
 
     public function check(UserInterface $user, string  $method): void
     {
+        if (Request::METHOD_POST === $method) {
+            return;
+        }
+
         $this->authenticationChecker->isAuthenticated();
 
         if (!$this->checkMethod($method)) {
